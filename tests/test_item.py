@@ -12,6 +12,7 @@ def test_init(item1):  # проверка правильности создан�
     assert item1.name == 'monitor'
     assert item1.price == 15000
     assert item1.quantity == 7
+    assert len(Item.all) == 1
 
 
 def test_calculate_total_price(item1):  # проверка метода подсчета общей стоимости товара
