@@ -1,18 +1,32 @@
-"""Здесь надо написать тесты с использованием pytest для модуля item."""
 from src.item import Item
-from pytest import fixture
+from pytest import fixture, raises
 
 
 @fixture
-def item1(): # Экземпляр товара "монитор"
-    return Item('monitor', 15000, 7)
+def item1():  # Экземпляр товара
+    return Item('Телефон', 10000, 5)
 
 
 def test_init(item1):  # проверка правильности создания полей экземпляра
-    assert item1.name == 'monitor'
-    assert item1.price == 15000
-    assert item1.quantity == 7
+    assert item1.name == 'Телефон'
+    assert item1.price == 10000
+    assert item1.quantity == 5
+    item1.name = 'Смартфон'
+    assert item1.name == 'Смартфон'
     assert len(Item.all) == 1
+    with raises(Exception):
+        item1.name = 'СуперСмартфон'
+
+
+def test_instantiate_from_csv():  # проверка создания экземпляров из items.csv
+    Item.all.clear()
+    Item.instantiate_from_csv()
+    assert len(Item.all) == 5
+
+def test_string_to_number():  # проверка преобразования строки в int
+    assert Item.string_to_number('5.5') == 5
+    with raises(Exception):
+        Item.string_to_number('пять')
 
 
 def test_calculate_total_price(item1):  # проверка метода подсчета общей стоимости товара
