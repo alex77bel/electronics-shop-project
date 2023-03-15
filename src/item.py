@@ -21,6 +21,12 @@ class Item:
         self.quantity = quantity
         Item.all.append(self)
 
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self) -> str:
+        return f'{self.name}'
+
     @classmethod
     def _verify_name(cls, name: str):
         if len(name) > 10:

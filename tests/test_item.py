@@ -23,6 +23,7 @@ def test_instantiate_from_csv():  # проверка создания экзем
     Item.instantiate_from_csv()
     assert len(Item.all) == 5
 
+
 def test_string_to_number():  # проверка преобразования строки в int
     assert Item.string_to_number('5.5') == 5
     with raises(Exception):
@@ -37,3 +38,8 @@ def test_apply_discount(item1):  # проверка метода примене�
     old_price = item1.price  # цена до скидки
     item1.apply_discount()  # применяем скидку
     assert item1.price == old_price * item1.pay_rate  # проверяем, как сработало
+
+
+def test_str_repr(item1):
+    assert repr(item1) == "Item('Телефон', 10000, 5)"
+    assert str(item1) == 'Телефон'
