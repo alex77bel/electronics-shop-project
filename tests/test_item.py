@@ -7,6 +7,11 @@ def item1():  # Экземпляр товара
     return Item('Телефон', 10000, 5)
 
 
+@fixture
+def item2():  # Экземпляр товара
+    return Item('Телефон', 20000, 3)
+
+
 def test_init(item1):  # проверка правильности создания полей экземпляра
     assert item1.name == 'Телефон'
     assert item1.price == 10000
@@ -43,3 +48,9 @@ def test_apply_discount(item1):  # проверка метода примене�
 def test_str_repr(item1):
     assert repr(item1) == "Item('Телефон', 10000, 5)"
     assert str(item1) == 'Телефон'
+
+
+def test_add(item1, item2):
+    assert item1 + item2 == 8
+    with raises(Exception):
+        item1 + 3

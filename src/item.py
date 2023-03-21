@@ -27,8 +27,17 @@ class Item:
     def __str__(self) -> str:
         return f'{self.name}'
 
+    def __add__(self, other) -> int:
+        self._verify_other_class(other)
+        return self.quantity + other.quantity
+
     @classmethod
-    def _verify_name(cls, name: str):
+    def _verify_other_class(cls, other):  # проверка принадлежности 2-го слагаемого классу Phone
+        if other.__class__.__name__ not in ('Phone', cls.__name__):
+            raise TypeError(f'Суммировать можно только Item с Phone или между собой.')
+
+    @classmethod
+    def _verify_name(cls, name: str):  # проверка поля name
         if len(name) > 10:
             raise Exception('Длина наименования товара превышает 10 символов')
 
