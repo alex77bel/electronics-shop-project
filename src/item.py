@@ -32,8 +32,8 @@ class Item:
         return self.quantity + other.quantity
 
     @classmethod
-    def _verify_other_class(cls, other):  # проверка принадлежности 2-го слагаемого классу Phone
-        if other.__class__.__name__ not in ('Phone', cls.__name__):
+    def _verify_other_class(cls, other):  # проверка принадлежности 2-го слагаемого подклассу Item
+        if not issubclass(other.__class__, cls):
             raise TypeError(f'Суммировать можно только Item с Phone или между собой.')
 
     @classmethod
