@@ -1,5 +1,6 @@
 from csv import DictReader
 import os.path
+from src.CustomException import InstantiateCSVError
 
 
 class Item:
@@ -37,7 +38,7 @@ class Item:
             raise TypeError(f'Суммировать можно только Item с Phone или между собой.')
 
     @classmethod
-    def _verify_name(cls, name: str):  # проверка поля name
+    def _verify_name(cls, name: str) -> None:  # проверка поля name
         if len(name) > 10:
             raise Exception('Длина наименования товара превышает 10 символов')
 
@@ -64,23 +65,29 @@ class Item:
         self.price *= self.pay_rate
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls) -> None:
         """
         Создает экземпляры Item, инициализирует данными из src/items.csv
         """
         for item in cls._csv_reader(os.path.abspath(os.path.join(os.path.dirname(__file__), '..\\src\\items.csv'))):
-            Item(item['name'], float(item['price']), cls.string_to_number(item['quantity']))
+            try:
+                Item(item['name'], float(item['price']), cls.string_to_number(item['quantity']))
+            except Exception:
+                raise InstantiateCSVError('Файл item.csv поврежден')
 
     @staticmethod
-    def _csv_reader(filename: str) -> list[dict]:
+    def _csv_reader(filename: str) -> list[dict] | None:
         """
         Получает данные из файла filename, возвращает список
         """
-        with open(filename) as csvfile:
-            return [*DictReader(csvfile)]
+        try:
+            with open(filename) as csvfile:
+                return [*DictReader(csvfile)]
+        except FileNotFoundError:
+            raise FileNotFoundError('Отсутствует файл item.csv')
 
     @staticmethod
-    def string_to_number(string: str) -> int | str:
+    def string_to_number(string: str) -> int | None:
         """
         Преобразует строку в int
         """

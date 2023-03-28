@@ -1,5 +1,6 @@
 from src.item import Item
 from pytest import fixture, raises
+from src.CustomException import InstantiateCSVError
 
 
 @fixture
@@ -22,11 +23,23 @@ def test_init(item1):  # проверка правильности создан�
     with raises(Exception):
         item1.name = 'СуперСмартфон'
 
-
 def test_instantiate_from_csv():  # проверка создания экземпляров из items.csv
     Item.all.clear()
     Item.instantiate_from_csv()
     assert len(Item.all) == 5
+
+# Для выполнения этой проверки надо удалить файл items.csv
+# и закомментить тесты: test_instantiate_from_csv и test_instantiate_from_csv_bad
+# def test_instantiate_from_csv_not_found():  # проверка ошибки при отсутствии файла items.csv
+#     with raises(FileNotFoundError):
+#         Item.instantiate_from_csv()
+
+
+# Для выполнения этой проверки надо внести ошибку в файл items.csv
+# и закомментить test_instantiate_from_csv и test_instantiate_from_csv_not_found
+# def test_instantiate_from_csv_bad():  # проверка ошибки при повреждении файла items.csv
+#     with raises(InstantiateCSVError):
+#         Item.instantiate_from_csv()
 
 
 def test_string_to_number():  # проверка преобразования строки в int
